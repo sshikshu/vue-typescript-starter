@@ -2,6 +2,7 @@ const path = require('path');
 const webpack = require('webpack');
 
 const BabiliPlugin = require('babili-webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
 const HtmlWebpackPlugin = require('html-webpack-plugin');
@@ -17,7 +18,7 @@ module.exports = function (environment) {
         devtool: env.prod ? 'source-map' : 'eval',
         output: {
             path: path.resolve(__dirname, '../dist'),
-            filename: (env.prod)? '[name].[chunkhash].bundle.js' :'[name].bundle.js',
+            filename: (env.prod) ? '[name].[chunkhash].bundle.js' : '[name].bundle.js',
             pathinfo: !env.prod
         },
         resolve: {
@@ -61,7 +62,7 @@ module.exports = function (environment) {
             new webpack.optimize.CommonsChunkPlugin({
                 minChunks: Infinity,
                 name: 'common',
-                filename: (env.prod)? '[name].[chunkhash].js' : '[name].js',
+                filename: (env.prod) ? '[name].[chunkhash].js' : '[name].js',
             }),
             new HtmlWebpackPlugin({
                 template: 'src/index.html'
@@ -94,6 +95,10 @@ module.exports = function (environment) {
                 minimize: true
             }),
             new WebpackMd5Hash(),
+            new CompressionPlugin({
+                regExp: /\.css$|\.html$|\.js$|\.map$/,
+                threshold: 2 * 1024
+            })
         ]);
     }
 
