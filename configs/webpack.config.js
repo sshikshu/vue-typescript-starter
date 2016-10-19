@@ -59,11 +59,11 @@ module.exports = function (environment) {
             }),
             new ForkCheckerPlugin(),
             new webpack.optimize.OccurrenceOrderPlugin(true),
-            new webpack.optimize.CommonsChunkPlugin({
+            /*new webpack.optimize.CommonsChunkPlugin({
                 minChunks: Infinity,
                 name: 'common',
                 filename: (env.prod) ? '[name].[chunkhash].js' : '[name].js',
-            }),
+            }),*/
             new HtmlWebpackPlugin({
                 template: 'src/index.html'
             }),
@@ -84,12 +84,6 @@ module.exports = function (environment) {
 
     if (env.prod) {
         config.plugins = config.plugins.concat([
-            /*new UglifyJsPlugin({
-                beautify: false,
-                mangle: { screw_ie8: true, keep_fnames: true },
-                compress: { screw_ie8: true },
-                comments: false
-            }),*/
             new BabiliPlugin(),
             new webpack.LoaderOptionsPlugin({
                 minimize: true
@@ -97,7 +91,7 @@ module.exports = function (environment) {
             new WebpackMd5Hash(),
             new CompressionPlugin({
                 regExp: /\.css$|\.html$|\.js$|\.map$/,
-                threshold: 2 * 1024
+                threshold: 1024
             })
         ]);
     }
